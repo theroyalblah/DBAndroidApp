@@ -1,7 +1,6 @@
 package com.example.databaseproject;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class User {
     private int id;
@@ -15,8 +14,8 @@ public class User {
 
     User(int uid, String uname, String uemail) {
         id = uid;
-        uname = name;
-        uemail = email;
+        name = uname;
+        email = uemail;
         userType = "student";
     }
 
@@ -31,8 +30,8 @@ public class User {
        return id;
    }
    public String getEmail() { return email; }
-    public String getName() { return name; }
-    public String getUserType() {
+   public String getName() { return name; }
+   public String getUserType() {
         if (userType == null) {
             String sql = String.format("SELECT * FROM admins WHERE admin_id='%d';", id);
             JSONArray response = QueryBuilder.performQuery(sql);
