@@ -1,5 +1,6 @@
 package com.example.databaseproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,7 +27,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // Intent
+        final Intent studentLoginIntent = new Intent(this, HeaderActivity.class);
 
+        // GUI
         final Button loginButton = findViewById(R.id.loginButton);
 
         final EditText emailField = findViewById(R.id.emailField);
@@ -53,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
                             String text = userType;
                             Toast toast = Toast.makeText(LoginActivity.this, text, duration);
                             toast.show();
+                            finish();
+                            startActivity(studentLoginIntent);
 
                         } else {
                             // incorrect password
