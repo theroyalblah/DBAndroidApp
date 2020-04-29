@@ -49,15 +49,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (res != null) {
                     try {
                         if (password.equals(res.getString("password"))) {
-                            int duration = Toast.LENGTH_SHORT;
 
                             int userID = res.getInt("id");
                             User loggedInUser = new User(userID);
                             String userType = loggedInUser.getUserType();
-                            String text = userType;
-                            Toast toast = Toast.makeText(LoginActivity.this, text, duration);
-                            toast.show();
-                            finish();
+                            UserSession.setCurrentUser(loggedInUser);
                             startActivity(studentLoginIntent);
 
                         } else {
@@ -76,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 else {
                     int duration = Toast.LENGTH_SHORT;
 
-                    String text = "That username was not found. Please try again";
+                    String text = "Your email or password was incorrect. Please try again.";
                     Toast toast = Toast.makeText(LoginActivity.this, text, duration);
                     toast.show();
                 }

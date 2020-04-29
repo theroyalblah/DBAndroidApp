@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 import android.widget.TextView;
 
+import org.json.JSONException;
+
 
 public class HeaderActivity extends AppCompatActivity {
 
@@ -26,12 +28,18 @@ public class HeaderActivity extends AppCompatActivity {
         final TextView welcomeText = findViewById(R.id.welcomeText);
 
         final Button logOutButton = findViewById(R.id.logoutButton);
-
-        welcomeText.setText("Welcome, PeePee");
+        final User loggedInUser = UserSession.getUser();
+        try {
+            String text = String.format("Welcome, %s", loggedInUser.getName());
+            welcomeText.setText(text);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         logOutButton.setText("Log Out");
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UserSession.clearCurrentUser();
                 startActivity(loginIntent);
             }
         });

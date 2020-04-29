@@ -1,6 +1,8 @@
 package com.example.databaseproject;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class User {
     private int id;
@@ -29,8 +31,32 @@ public class User {
    public int getId() {
        return id;
    }
-   public String getEmail() { return email; }
-   public String getName() { return name; }
+   public String getEmail() throws JSONException {
+        if (email == null) {
+            String sql = String.format("SELECT email FROM users WHERE user_id='%d';", id);
+            JSONArray response = QueryBuilder.performQuery(sql);
+            JSONObject res = QueryBuilder.getJSONObject(response, 0);
+            if (res != null) {
+                email = res.getString("email");
+            } else {
+                email = null;
+            }
+        }
+        return email;
+    }
+   public String getName() throws JSONException {
+       if (name == null) {
+           String sql = String.format("SELECT name FROM users WHERE id='%d';", id);
+           JSONArray response = QueryBuilder.performQuery(sql);
+           JSONObject res = QueryBuilder.getJSONObject(response, 0);
+           if (res != null) {
+               name = res.getString("name");
+           } else {
+               name = null;
+           }
+       }
+       return name;
+   }
    public String getUserType() {
         if (userType == null) {
             String sql = String.format("SELECT * FROM admins WHERE admin_id='%d';", id);

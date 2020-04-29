@@ -25,9 +25,6 @@ public class QueryBuilder {
                 StrictMode.setThreadPolicy(policy);
             }
 
-            //localhost will NOT work for database because localhost is the phone/emulator
-            //use 10.0.2.2 for the computer the emulator is running on, or another IP address
-
             URL url = new URL("https://192.168.1.17/phase3/queryAPI.php");
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setSSLSocketFactory(SSLCertificateSocketFactory.getInsecure(0, null));
