@@ -1,5 +1,8 @@
 package com.example.databaseproject;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class User {
     private int id;
     private String name;
@@ -27,14 +30,24 @@ public class User {
    public int getId() {
        return id;
    }
-
-    public String getEmail() {
-        return email;
+   public String getEmail() { return email; }
+    public String getName() { return name; }
+    public String getUserType() {
+        if (userType == null) {
+            String sql = String.format("SELECT * FROM admins WHERE admin_id='%d';", id);
+            JSONArray response = QueryBuilder.performQuery(sql);
+            if(response != null) {
+                userType = "admin";
+            } else {
+                sql = String.format("SELECT * FROM parents WHERE parent_id='%d';", id);
+                response = QueryBuilder.performQuery(sql);
+                if(response != null) {
+                    userType = "parent";
+                } else {
+                    userType = "student";
+                }
+            }
+        }
+        return userType;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getUserType() { return userType; }
 }

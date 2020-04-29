@@ -47,7 +47,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (password.equals(res.getString("password"))) {
                             int duration = Toast.LENGTH_SHORT;
 
-                            String text = "Success!";
+                            int userID = res.getInt("id");
+                            User loggedInUser = new User(userID);
+                            String userType = loggedInUser.getUserType();
+                            String text = userType;
                             Toast toast = Toast.makeText(LoginActivity.this, text, duration);
                             toast.show();
 
