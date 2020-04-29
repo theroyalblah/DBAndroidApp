@@ -21,10 +21,10 @@ public class User {
         userType = "student";
     }
 
-   User(int uid, String uname, String uemail, String uType) {
+   User(int uid, String uName, String uEmail, String uType) {
        id = uid;
-       name = uname;
-       email = uemail;
+       name = uName;
+       email = uEmail;
        userType = uType;
    }
 

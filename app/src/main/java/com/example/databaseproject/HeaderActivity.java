@@ -20,7 +20,6 @@ public class HeaderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_header);
         // Intent
         final Intent loginIntent = new Intent(this, LoginActivity.class);
 
@@ -36,6 +35,7 @@ public class HeaderActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         logOutButton.setText("Log Out");
+
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

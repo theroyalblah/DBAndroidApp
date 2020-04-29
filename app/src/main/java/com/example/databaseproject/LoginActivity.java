@@ -28,10 +28,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Intent
-        final Intent studentLoginIntent = new Intent(this, HeaderActivity.class);
+        final Intent studentLoginIntent = new Intent(this, StudentLoginActivity.class);
 
         // GUI
         final Button loginButton = findViewById(R.id.loginButton);
+        final Button registerButton = findViewById(R.id.registerButton);
 
         final EditText emailField = findViewById(R.id.emailField);
         final EditText passField = findViewById(R.id.passField);

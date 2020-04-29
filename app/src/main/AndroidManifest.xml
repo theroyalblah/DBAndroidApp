@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".HeaderActivity" />
+        <activity android:name=".EditStudentAccountActivity" />
+        <activity android:name=".StudentLoginActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
