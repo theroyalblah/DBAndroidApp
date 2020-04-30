@@ -10,28 +10,12 @@
         android:id="@+id/enrollMentor"
         android:layout_width="176dp"
         android:layout_height="68dp"
+        android:layout_marginTop="21dp"
         android:text="Enroll As Mentor"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/enrollMentee"
-        android:layout_width="176dp"
-        android:layout_height="68dp"
-        android:text="Enroll As Mentee"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enrollMentor" />
-
-    <Button
-        android:id="@+id/editAccount"
-        android:layout_width="176dp"
-        android:layout_height="68dp"
-        android:text="Edit Account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enrollMentee" />
+        app:layout_constraintTop_toBottomOf="@+id/userTextType" />
 
     <Button
         android:id="@+id/logOutButton"
@@ -39,6 +23,56 @@
         android:layout_height="68dp"
         android:text="Log Out"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editAccount" />
+
+    <Button
+        android:id="@+id/editAccount"
+        android:layout_width="176dp"
+        android:layout_height="68dp"
+        android:text="Edit Account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enrollMentee" />
+
+    <Button
+        android:id="@+id/enrollMentee"
+        android:layout_width="176dp"
+        android:layout_height="68dp"
+        android:text="Enroll As Mentee"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enrollMentor" />
+
+    <TextView
+        android:id="@+id/welcomeType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="138dp"
+        android:layout_marginLeft="138dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="138dp"
+        android:layout_marginRight="138dp"
+        android:text="You are Logged in as:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/userTextType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="177dp"
+        android:layout_marginLeft="177dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="176dp"
+        android:layout_marginRight="176dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeType" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
