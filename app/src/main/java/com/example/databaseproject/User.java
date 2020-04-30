@@ -61,12 +61,12 @@ public class User {
         if (userType == null) {
             String sql = String.format("SELECT * FROM admins WHERE admin_id='%d';", id);
             JSONArray response = QueryBuilder.performQuery(sql);
-            if(response != null) {
+            if(response.length() != 0) {
                 userType = "admin";
             } else {
                 sql = String.format("SELECT * FROM parents WHERE parent_id='%d';", id);
                 response = QueryBuilder.performQuery(sql);
-                if(response != null) {
+                if(response.length() != 0) {
                     userType = "parent";
                 } else {
                     userType = "student";

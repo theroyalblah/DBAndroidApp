@@ -32,6 +32,11 @@ public class EditStudentAccountActivity extends AppCompatActivity {
         final EditText editPhone = findViewById(R.id.editPhone);
         final Button submitButton = findViewById(R.id.submitButton);
 
+        User loggedInUser = UserSession.getUser();
+        if (UserSession.getUser().getUserType().equals("parent")) {
+            editGrade.setVisibility(View.GONE);
+        }
+
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,17 +48,21 @@ public class EditStudentAccountActivity extends AppCompatActivity {
                 String name = editName.getText().toString();
                 String password = editPassword.getText().toString();
                 String phone = editPhone.getText().toString();
-                String grade = editGrade.getText().toString();
 
-                String updateUser = String.format("UPDATE users SET email = '%s', password = '%s', name = '%s', phone = '%s' WHERE id = '%s'",
-                        editEmail.getText(), editPassword.getText(), editName.getText(), editPhone.getText(), userId);
+                String format = String.format("UPDATE users SET email = '%s', password = '%s', name = '%s', phone = '%s' WHERE id = '%s'",
+                        email, name, password, phone, userId);
+                QueryBuilder.performQuery(format);
 
-                QueryBuilder.performQuery(updateUser);
+                // student account
+                if (UserSession.getUser().getUserType().equals("student")){
+                    String grade = editGrade.getText().toString();
+                    String updateGrade = String.format("UPDATE students SET grade = '%s' WHERE student_id = '%s'", grade, userId);
 
-                String updateGrade = String.format("UPDATE students SET grade = '%s' WHERE student_id = '%s'", editGrade.getText(), userId);
+                    QueryBuilder.performQuery(updateGrade);
 
-                QueryBuilder.performQuery(updateGrade);
+                }
 
+                // Grab new user data
                 String getNewData = String.format("SELECT * from users WHERE id = '%s'", userId);
 
                 JSONArray response = QueryBuilder.performQuery(getNewData);
@@ -64,6 +73,7 @@ public class EditStudentAccountActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
 
                 startActivity(studentLoginIntent);
             }
