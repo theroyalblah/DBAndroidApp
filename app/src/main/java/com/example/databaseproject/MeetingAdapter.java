@@ -130,16 +130,18 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             QueryBuilder.performQuery(query);
             context.startActivity(enrollMenteeStudentActivity);
         }
-        /*
-        else if(enroll_state == 2) //enroll as mentor
+        else if(enroll_state == "mentor") //enroll as mentor
         {
-            final Intent enrollMentorStudentActivity = new Intent(ct, EnrollMentorStudentActivity.class);
-            query = String.format("INSERT INTO mentors VALUES ('%s')", userID);
-            QueryExecution.executeQuery(query);
+            final Intent enrollMentorStudentActivity = new Intent(context, EnrollAsMentorStudent.class);
+
             query = String.format("INSERT INTO enroll2 VALUES ('%s', '%s')", meeting_ids[position], userID);
-            QueryExecution.executeQuery(query);
-            ct.startActivity(enrollMentorStudentActivity);
+            QueryBuilder.performQuery(query);
+            query = String.format("INSERT INTO mentors VALUES ('%s')", userID);
+            QueryBuilder.performQuery(query);
+
+            context.startActivity(enrollMentorStudentActivity);
         }
+        /*
         else if(enroll_state == 3) //unenroll
         {
             final Intent viewEnrolledMeetingsActivity = new Intent(ct, ViewEnrolledMeetingsActivity.class);
