@@ -17,6 +17,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         // Intent
         final Intent editAccountIntent = new Intent(this, EditStudentAccountActivity.class);
         final Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+        final Intent enrollAsMenteeIntent = new Intent(this, EnrollAsMenteeStudent.class);
 
         // GUI
         final TextView welcomeText = findViewById(R.id.welcomeText);
@@ -33,6 +34,14 @@ public class StudentLoginActivity extends AppCompatActivity {
                 startActivity(editAccountIntent);
             }
         });
+
+        registerAsMentee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(enrollAsMenteeIntent);
+            }
+        });
+
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
