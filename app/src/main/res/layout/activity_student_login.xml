@@ -45,6 +45,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/childrenButton" />
+
+    <Button
+        android:id="@+id/childrenButton"
+        android:layout_width="176dp"
+        android:layout_height="68dp"
+        android:text="Children"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/adminRole" />
 
     <Button

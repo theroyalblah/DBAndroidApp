@@ -38,6 +38,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         final Intent enrollAsMenteeIntent = new Intent(this, EnrollAsMenteeStudent.class);
         final Intent enrollAsMentorIntent = new Intent(this, EnrollAsMentorStudent.class);
         final Intent viewMeetingsIntent = new Intent(this, ViewMeetingsActivity.class);
+        final Intent viewChildrenIntent = new Intent(this, ViewChildren.class);
 
         // GUI
         final TextView welcomeText = findViewById(R.id.welcomeText);
@@ -48,6 +49,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         final Button logOutButton = findViewById(R.id.logOutButton);
         final Button adminButton = findViewById(R.id.adminRole);
         final Button viewMeetings = findViewById(R.id.viewMeetings);
+        final Button viewChildren = findViewById(R.id.childrenButton);
 
         viewMeetings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +84,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // startActivity(enrollAsMenteeIntent);
+                // startActivity(adminIntent);
             }
         });
 
@@ -92,6 +94,14 @@ public class StudentLoginActivity extends AppCompatActivity {
                 UserSession.clearCurrentUser();
                 startActivity(loginActivityIntent);
             }
+        });
+
+        viewChildren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(viewChildrenIntent);
+            }
+
         });
 
         //Only students are allowed to register
@@ -110,6 +120,13 @@ public class StudentLoginActivity extends AppCompatActivity {
             adminButton.setVisibility(View.GONE);
         } else {
             adminButton.setVisibility(View.VISIBLE);
+        }
+
+        //Only Parents can use Children Button
+        if (UserType != "parent") {
+            viewChildren.setVisibility(View.GONE);
+        } else {
+            viewChildren.setVisibility(View.VISIBLE);
         }
     }
 }
