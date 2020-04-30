@@ -85,18 +85,18 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         }
     }
 
-    public void onBindViewHolder(@NonNull MyViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder viewHolder, final int index) {
 
-        viewHolder.meetingName.setText(meeting_names[position]);
-        String text = String.format("Grade Level: %s", grades[position]);
+        viewHolder.meetingName.setText(meeting_names[index]);
+        String text = String.format("Grade Level: %s", grades[index]);
         viewHolder.gradelevelText.setText(text);
 
-        viewHolder.dateText.setText(dates[position]);
+        viewHolder.dateText.setText(dates[index]);
 
         // military time should serve well enough
-        viewHolder.timeText.setText(times[position]);
-        viewHolder.capacityText.setText(enrollment[position] + "/6");
-
+        viewHolder.timeText.setText(times[index]);
+        int enrollmentAndYou = enrollment[index];
+        
         if(enroll_state == "mentee") {
             viewHolder.enrollButton.setText("Enroll");
             viewHolder.viewMeetingButton.setText("Enroll All");
@@ -109,21 +109,24 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             viewHolder.leaveAllMeetings.setVisibility(View.GONE);
         }
         else {
-            viewHolder.enrollButton.setText("Leave Meeting");
+            enrollmentAndYou += 1;
+            viewHolder.enrollButton.setText("Leave");
             viewHolder.viewMeetingButton.setText("View");
         }
+
+        viewHolder.capacityText.setText(enrollmentAndYou + "/6");
 
         viewHolder.enrollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enroll(enroll_state, position);
+                enroll(enroll_state, index);
             }
         });
 
         viewHolder.leaveAllMeetings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                leaveAllMeetings(position);
+                leaveAllMeetings(index);
             }
         });
 
@@ -131,38 +134,38 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 
             @Override
             public void onClick(View v) {
-                // vieworbulkMeeting(enroll_state, position);
+                viewMaterials(enroll_state, index);
             }
         });
     }
 
-    private void enroll(String enroll_state, int position) {
+    private void enroll(String enroll_state, int index) {
         String query;
 
-        if(enroll_state == "mentor") {
-            final Intent enrollMenteeStudentActivity = new Intent(context, EnrollAsMenteeStudent.class);
+        if(enroll_state.equals("mentee")) {
+            final Intent StudentLoginIntent = new Intent(context, StudentLoginActivity.class);
             query = String.format("INSERT INTO mentees VALUES ('%s')", userID);
             QueryBuilder.performQuery(query);
-            query = String.format("INSERT INTO enroll VALUES ('%s', '%s')", meeting_ids[position], userID);
+            query = String.format("INSERT INTO enroll VALUES ('%s', '%s')", meeting_ids[index], userID);
             QueryBuilder.performQuery(query);
-            context.startActivity(enrollMenteeStudentActivity);
+            context.startActivity(StudentLoginIntent);
         }
-        else if(enroll_state == "mentor") {
-            final Intent enrollMentorStudentActivity = new Intent(context, EnrollAsMentorStudent.class);
+        else if(enroll_state.equals("mentor")) {
+            final Intent StudentLoginIntent = new Intent(context, StudentLoginActivity.class);
 
-            query = String.format("INSERT INTO enroll2 VALUES ('%s', '%s')", meeting_ids[position], userID);
+            query = String.format("INSERT INTO enroll2 VALUES ('%s', '%s')", meeting_ids[index], userID);
             QueryBuilder.performQuery(query);
             query = String.format("INSERT INTO mentors VALUES ('%s')", userID);
             QueryBuilder.performQuery(query);
 
-            context.startActivity(enrollMentorStudentActivity);
+            context.startActivity(StudentLoginIntent);
         }
         else {
             final Intent viewMeetingsActivity = new Intent(context, StudentLoginActivity.class);
 
-            query = String.format("DELETE FROM enroll WHERE meet_id = '%s' AND mentee_id = '%s'", meeting_ids[position], userID);
+            query = String.format("DELETE FROM enroll WHERE meet_id = '%s' AND mentee_id = '%s'", meeting_ids[index], userID);
             QueryBuilder.performQuery(query);
-            query = String.format("DELETE FROM enroll2 WHERE meet_id = '%s' AND mentor_id = '%s'", meeting_ids[position], userID);
+            query = String.format("DELETE FROM enroll2 WHERE meet_id = '%s' AND mentor_id = '%s'", meeting_ids[index], userID);
             QueryBuilder.performQuery(query);
             context.startActivity(viewMeetingsActivity);
 
@@ -170,16 +173,26 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 
     }
 
-    private void leaveAllMeetings(int position) {
+    private void leaveAllMeetings(int index) {
 
         final Intent viewMeetingsActivity = new Intent(context, StudentLoginActivity.class);
-        String query = String.format("DELETE FROM enroll WHERE mentee_id = '%s' AND meet_id IN (SELECT meet_id FROM meetings WHERE meet_name = '%s' AND group_id = '%s')", userID, meeting_names[position], grades[position]);
+        String query = String.format("DELETE FROM enroll WHERE mentee_id = '%s' AND meet_id IN (SELECT meet_id FROM meetings WHERE meet_name = '%s' AND group_id = '%s')", userID, meeting_names[index], grades[index]);
         QueryBuilder.performQuery(query);
         context.startActivity(viewMeetingsActivity);
 
     }
 
+    private void viewMaterials(String enroll_state, int index) {
 
-
+        if (enroll_state.equals("mentee")) {
+            final Intent StudentLoginIntent = new Intent(context, StudentLoginActivity.class);
+            String query = String.format("INSERT INTO enroll SELECT meet_id, '%s' FROM meetings  WHERE group_id = '%s' AND meet_name = '%s'", userID, grades[index], meeting_names[index]);
+            QueryBuilder.performQuery(query);
+            context.startActivity(StudentLoginIntent);
+        } else {
+            // final Intent viewMaterialsIntent = new Intent(context, ViewMaterialsActivity.class);
+            // context.startActivity(viewMaterialsIntent);
+        }
+    }
 
 }

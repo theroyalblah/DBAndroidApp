@@ -76,7 +76,7 @@ public class QueryBuilder {
     public static JSONObject getJSONObject(JSONArray arr, int index) {
         if (arr != null && arr.length() != 0) {
             try {
-                JSONObject res = arr.getJSONObject(0);
+                JSONObject res = arr.getJSONObject(index);
                 return res;
 
             } catch (JSONException e) {
