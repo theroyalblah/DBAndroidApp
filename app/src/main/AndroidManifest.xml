@@ -19,6 +19,7 @@
         <activity android:name=".HeaderActivity" />
         <activity android:name=".EditStudentAccountActivity" />
         <activity android:name=".StudentLoginActivity" />
+        <activity android:name=".RegisterAccount" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
