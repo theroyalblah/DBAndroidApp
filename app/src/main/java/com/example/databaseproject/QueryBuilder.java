@@ -2,19 +2,21 @@ package com.example.databaseproject;
 
 import android.net.SSLCertificateSocketFactory;
 import android.os.StrictMode;
-import android.util.Log;
 
-import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+
 
 import javax.net.ssl.HttpsURLConnection;
+// returns just the JSONArray
+// Use getJSONObject for an individual return member
 public class QueryBuilder {
     public static JSONArray performQuery(String query) {
         try {
@@ -62,7 +64,7 @@ public class QueryBuilder {
                 JSONArray jsonResult = new JSONArray(response);
                 return jsonResult;
             }catch (JSONException err){
-                Log.d("JSON Error!", err.toString());
+               err.printStackTrace();
             }
         }
         catch(Exception exception) {
