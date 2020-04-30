@@ -63,6 +63,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         Button enrollButton;
         Button viewMeetingButton;
         Button leaveAllMeetings;
+        Button viewMembersButton;
 
         TextView gradelevelText;
         TextView meetingName;
@@ -74,6 +75,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             super(itemView);
 
             enrollButton = itemView.findViewById(R.id.enrollButton);
+            viewMembersButton = itemView.findViewById(R.id.viewMembersButton);
             viewMeetingButton = itemView.findViewById(R.id.viewMeetingButton);
             leaveAllMeetings = itemView.findViewById(R.id.leaveAllMeatings);
 
@@ -135,6 +137,14 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 viewMaterials(enroll_state, index);
+            }
+        });
+
+        viewHolder.viewMembersButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                viewMembers(enroll_state, index);
             }
         });
     }
@@ -199,4 +209,17 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         }
     }
 
+    private void viewMembers(String enroll_state, int index) {
+
+        if (enroll_state.equals("mentee")) {
+            final Intent viewMembersIntent = new Intent(context, ViewMembers.class);
+            String query = String.format("SELECT name FROM users WHERE id in (SELECT mentee_id from enroll where meet_id = '%d)", meeting_ids[index]);
+            QueryBuilder.performQuery(query);
+            context.startActivity(viewMembersIntent);
+        } else {
+            meetingMaterialId = meeting_ids[index];
+            final Intent viewMembersIntent = new Intent(context, ViewMembers.class);
+            context.startActivity(viewMembersIntent);
+        }
+    }
 }

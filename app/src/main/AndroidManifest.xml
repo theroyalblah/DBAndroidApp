@@ -24,6 +24,7 @@
         <activity android:name=".EnrollAsMentorStudent" />
         <activity android:name=".ViewMeetingsActivity" />
         <activity android:name=".ViewMaterials" />
+        <activity android:name=".ViewMembers" />
         <activity android:name=".ViewChildren" />
         <activity android:name=".EditChild" />
     </application>

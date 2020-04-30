@@ -96,6 +96,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/enrollButton" />
 
             <Button
+                android:id="@+id/viewMembersButton"
+                android:layout_width="102dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:text="Members"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/leaveAllMeatings" />
+
+            <Button
                 android:id="@+id/leaveAllMeatings"
                 android:layout_width="102dp"
                 android:layout_height="42dp"
