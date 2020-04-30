@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 public class StudentLoginActivity extends AppCompatActivity {
@@ -20,9 +21,19 @@ public class StudentLoginActivity extends AppCompatActivity {
         //get user type
         final User loggedInUser = UserSession.getUser();
         final String UserType = loggedInUser.getUserType();
+        String UsersName = "Default";
+        try {
+            UsersName = loggedInUser.getName();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        TextView userTextType = findViewById(R.id.userTextType);
         final TextView welcomeType = findViewById(R.id.welcomeType);
+
+        //Print user and type
+        TextView userTextType = findViewById(R.id.userTextType);
+        userTextType.setText("Welcome " + UsersName + "\n" + "You are: " + UserType);
+
 
 
         // Intent
