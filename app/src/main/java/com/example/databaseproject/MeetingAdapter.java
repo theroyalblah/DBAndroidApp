@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 
-//Adapter to fill recyclerView with dynamic number of objects, based on meetings input
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHolder> {
 
     String grades[];
@@ -23,9 +22,11 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
     String times[];
     String meeting_ids[];
     Context context;
-    String enroll_state; // 1=Mentee 2=Mentor 3=View
+
+    //expects mentor, mentee, or viewer
+    String enroll_state;
+
     int userID;
-    String query;
 
     public static int targetMeetingId;
 
@@ -61,6 +62,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 
         Button enrollButton;
         Button viewMeetingButton;
+        Button leaveAllMeetings;
 
         TextView gradelevelText;
         TextView meetingName;
@@ -71,48 +73,61 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            gradelevelText = itemView.findViewById(R.id.gradeLevelText);
-            capacityText = itemView.findViewById(R.id.capacityText);
             enrollButton = itemView.findViewById(R.id.enrollButton);
             viewMeetingButton = itemView.findViewById(R.id.viewMeetingButton);
+            leaveAllMeetings = itemView.findViewById(R.id.leaveAllMeatings);
+
+            gradelevelText = itemView.findViewById(R.id.gradeLevelText);
+            capacityText = itemView.findViewById(R.id.capacityText);
             meetingName = itemView.findViewById(R.id.meetingName);
             timeText = itemView.findViewById(R.id.timeViewText);
             dateText = itemView.findViewById(R.id.dateMeeting);
         }
     }
 
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        holder.meetingName.setText(meeting_names[position]);
-        String text = String.format("Grade Level: %s", grades[position]);
-        holder.gradelevelText.setText(text);
+    public void onBindViewHolder(@NonNull MyViewHolder viewHolder, final int position) {
 
-        holder.dateText.setText(dates[position]);
-        holder.timeText.setText(times[position]);
-        holder.capacityText.setText(enrollment[position] + "/6");
+        viewHolder.meetingName.setText(meeting_names[position]);
+        String text = String.format("Grade Level: %s", grades[position]);
+        viewHolder.gradelevelText.setText(text);
+
+        viewHolder.dateText.setText(dates[position]);
+
+        // military time should serve well enough
+        viewHolder.timeText.setText(times[position]);
+        viewHolder.capacityText.setText(enrollment[position] + "/6");
 
         if(enroll_state == "mentee") {
-            holder.enrollButton.setText("Enroll");
-            holder.viewMeetingButton.setText("Enroll All");
+            viewHolder.enrollButton.setText("Enroll");
+            viewHolder.viewMeetingButton.setText("Enroll All");
+            viewHolder.leaveAllMeetings.setVisibility(View.GONE);
         }
-        else if (enroll_state == "mentor")
-        {
-            holder.enrollButton.setText("Enroll");
-            holder.viewMeetingButton.setEnabled(false);
-            holder.viewMeetingButton.setVisibility(View.GONE);
+        else if (enroll_state == "mentor") {
+            viewHolder.enrollButton.setText("Enroll");
+            viewHolder.viewMeetingButton.setEnabled(false);
+            viewHolder.viewMeetingButton.setVisibility(View.GONE);
+            viewHolder.leaveAllMeetings.setVisibility(View.GONE);
         }
         else {
-            holder.enrollButton.setText("Unenroll");
-            holder.viewMeetingButton.setText("View");
+            viewHolder.enrollButton.setText("Leave Meeting");
+            viewHolder.viewMeetingButton.setText("View");
         }
 
-        holder.enrollButton.setOnClickListener(new View.OnClickListener() {
+        viewHolder.enrollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifyAndEnroll(enroll_state, position);
+                enroll(enroll_state, position);
             }
         });
 
-        holder.viewMeetingButton.setOnClickListener(new View.OnClickListener() {
+        viewHolder.leaveAllMeetings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                leaveAllMeetings(position);
+            }
+        });
+
+        viewHolder.viewMeetingButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -121,7 +136,8 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         });
     }
 
-    private void verifyAndEnroll(String enroll_state, int position) {
+    private void enroll(String enroll_state, int position) {
+        String query;
 
         if(enroll_state == "mentor") {
             final Intent enrollMenteeStudentActivity = new Intent(context, EnrollAsMenteeStudent.class);
@@ -141,44 +157,25 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 
             context.startActivity(enrollMentorStudentActivity);
         }
-        /*
-        else if(enroll_state == 3) //unenroll
-        {
-            final Intent viewEnrolledMeetingsActivity = new Intent(ct, ViewEnrolledMeetingsActivity.class);
-            AlertDialog.Builder builder = new AlertDialog.Builder(ct);
-            builder.setTitle("How would you like to unenroll?");
+        else {
+            final Intent viewMeetingsActivity = new Intent(context, StudentLoginActivity.class);
 
-            builder.setPositiveButton("Unenroll in Bulk",
-                    new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-                            query = String.format("DELETE FROM enroll WHERE mentee_id = '%s' AND meet_id IN (SELECT meet_id FROM meetings WHERE meet_name = '%s' AND group_id = '%s')", userID, meeting_names[position], grades[position]);
-                            QueryExecution.executeQuery(query);
-                            ct.startActivity(viewEnrolledMeetingsActivity);
-                            dialog.cancel();
-                        }
-                    });
-            builder.setNegativeButton("Unenroll Individually",
-                    new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-
-                            query = String.format("DELETE FROM enroll WHERE meet_id = '%s' AND mentee_id = '%s'", meeting_ids[position], userID);
-                            QueryExecution.executeQuery(query);
-                            query = String.format("DELETE FROM enroll2 WHERE meet_id = '%s' AND mentor_id = '%s'", meeting_ids[position], userID);
-                            QueryExecution.executeQuery(query);
-                            ct.startActivity(viewEnrolledMeetingsActivity);
-                            dialog.cancel();
-                        }
-                    });
-            builder.create().show();
+            query = String.format("DELETE FROM enroll WHERE meet_id = '%s' AND mentee_id = '%s'", meeting_ids[position], userID);
+            QueryBuilder.performQuery(query);
+            query = String.format("DELETE FROM enroll2 WHERE meet_id = '%s' AND mentor_id = '%s'", meeting_ids[position], userID);
+            QueryBuilder.performQuery(query);
+            context.startActivity(viewMeetingsActivity);
 
         }
-         */
 
+    }
 
+    private void leaveAllMeetings(int position) {
+
+        final Intent viewMeetingsActivity = new Intent(context, StudentLoginActivity.class);
+        String query = String.format("DELETE FROM enroll WHERE mentee_id = '%s' AND meet_id IN (SELECT meet_id FROM meetings WHERE meet_name = '%s' AND group_id = '%s')", userID, meeting_names[position], grades[position]);
+        QueryBuilder.performQuery(query);
+        context.startActivity(viewMeetingsActivity);
 
     }
 

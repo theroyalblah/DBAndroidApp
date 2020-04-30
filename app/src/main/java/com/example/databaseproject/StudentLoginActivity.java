@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 public class StudentLoginActivity extends AppCompatActivity {
 
@@ -30,7 +28,7 @@ public class StudentLoginActivity extends AppCompatActivity {
 
         //Print user and type
         TextView userTextType = findViewById(R.id.userTextType);
-        userTextType.setText("Welcome " + UsersName + "\n" + "You are a: " + UserType);
+        userTextType.setText("Welcome " + UsersName + "\n" + "You are a " + UserType);
 
 
 
@@ -39,6 +37,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         final Intent loginActivityIntent = new Intent(this, LoginActivity.class);
         final Intent enrollAsMenteeIntent = new Intent(this, EnrollAsMenteeStudent.class);
         final Intent enrollAsMentorIntent = new Intent(this, EnrollAsMentorStudent.class);
+        final Intent viewMeetingsIntent = new Intent(this, ViewMeetingsActivity.class);
 
         // GUI
         final TextView welcomeText = findViewById(R.id.welcomeText);
@@ -48,11 +47,20 @@ public class StudentLoginActivity extends AppCompatActivity {
         final Button editAccount = findViewById(R.id.editAccount);
         final Button logOutButton = findViewById(R.id.logOutButton);
         final Button adminButton = findViewById(R.id.adminRole);
+        final Button viewMeetings = findViewById(R.id.viewMeetings);
+
+        viewMeetings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(viewMeetingsIntent);
+            }
+
+        });
 
         registerAsMentor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(editAccountIntent);
+                startActivity(enrollAsMentorIntent);
             }
 
         });
@@ -74,17 +82,9 @@ public class StudentLoginActivity extends AppCompatActivity {
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(enrollAsMenteeIntent);
+                // startActivity(enrollAsMenteeIntent);
             }
         });
-        
-        registerAsMentee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(enrollAsMenteeIntent);
-            }
-        });
-
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,9 +98,11 @@ public class StudentLoginActivity extends AppCompatActivity {
         if (UserType != "student") {
             registerAsMentee.setVisibility(View.GONE);
             registerAsMentor.setVisibility(View.GONE);
+            viewMeetings.setVisibility(View.GONE);
         } else {
             registerAsMentee.setVisibility(View.VISIBLE);
             registerAsMentor.setVisibility(View.VISIBLE);
+            viewMeetings.setVisibility(View.VISIBLE);
         }
 
         //Only Admins can use admin

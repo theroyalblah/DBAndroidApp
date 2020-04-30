@@ -10,18 +10,17 @@
         android:id="@+id/adminRole"
         android:layout_width="176dp"
         android:layout_height="68dp"
-        android:layout_marginTop="68dp"
         android:text="Admin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enrollMentor" />
+        app:layout_constraintTop_toBottomOf="@+id/viewMeetings" />
 
     <Button
         android:id="@+id/enrollMentor"
         android:layout_width="176dp"
         android:layout_height="68dp"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="64dp"
         android:text="Enroll As Mentor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -58,18 +57,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enrollMentor" />
 
+    <Button
+        android:id="@+id/viewMeetings"
+        android:layout_width="176dp"
+        android:layout_height="68dp"
+        android:text="View Meetings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enrollMentee" />
+
     <TextView
         android:id="@+id/userTextType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="175dp"
-        android:layout_marginLeft="175dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="176dp"
-        android:layout_marginRight="176dp"
+        android:layout_marginTop="90dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

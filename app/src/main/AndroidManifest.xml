@@ -22,6 +22,7 @@
         <activity android:name=".RegisterAccount" />
         <activity android:name=".EnrollAsMenteeStudent" />
         <activity android:name=".EnrollAsMentorStudent" />
+        <activity android:name=".ViewMeetingsActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
