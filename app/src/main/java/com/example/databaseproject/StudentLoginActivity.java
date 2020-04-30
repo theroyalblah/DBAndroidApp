@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 public class StudentLoginActivity extends AppCompatActivity {
@@ -20,9 +21,17 @@ public class StudentLoginActivity extends AppCompatActivity {
         //get user type
         final User loggedInUser = UserSession.getUser();
         final String UserType = loggedInUser.getUserType();
+        String UsersName = "Default";
+        try {
+            UsersName = loggedInUser.getName();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        //Print user and type
         TextView userTextType = findViewById(R.id.userTextType);
-        final TextView welcomeType = findViewById(R.id.welcomeType);
+        userTextType.setText("Welcome " + UsersName + "\n" + "You are a: " + UserType);
+
 
 
         // Intent
@@ -38,6 +47,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         final Button registerAsMentee = findViewById(R.id.enrollMentee);
         final Button editAccount = findViewById(R.id.editAccount);
         final Button logOutButton = findViewById(R.id.logOutButton);
+        final Button adminButton = findViewById(R.id.adminRole);
 
         registerAsMentor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,10 +71,17 @@ public class StudentLoginActivity extends AppCompatActivity {
             }
         });
 
-        registerAsMentor.setOnClickListener(new View.OnClickListener() {
+        adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(enrollAsMentorIntent);
+                startActivity(enrollAsMenteeIntent);
+            }
+        });
+        
+        registerAsMentee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(enrollAsMenteeIntent);
             }
         });
 
@@ -86,5 +103,11 @@ public class StudentLoginActivity extends AppCompatActivity {
             registerAsMentor.setVisibility(View.VISIBLE);
         }
 
+        //Only Admins can use admin
+        if (UserType != "admin") {
+            adminButton.setVisibility(View.GONE);
+        } else {
+            adminButton.setVisibility(View.VISIBLE);
+        }
     }
 }
