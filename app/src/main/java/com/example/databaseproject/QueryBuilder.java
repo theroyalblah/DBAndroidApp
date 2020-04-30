@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -27,6 +26,7 @@ public class QueryBuilder {
 
             URL url = new URL("https://192.168.1.17/phase3/queryAPI.php");
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
             connection.setSSLSocketFactory(SSLCertificateSocketFactory.getInsecure(0, null));
             connection.setHostnameVerifier(new AllowAllHostnameVerifier());
             connection.setRequestMethod("POST");
@@ -38,7 +38,6 @@ public class QueryBuilder {
             JSONObject jsonParam = new JSONObject();
             jsonParam.put("query", query);
 
-            Log.i("JSON", jsonParam.toString());
             DataOutputStream os = new DataOutputStream(connection.getOutputStream());
             os.writeBytes(jsonParam.toString());
 
@@ -47,16 +46,13 @@ public class QueryBuilder {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder sb = new StringBuilder();
+
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line+"\n");
             }
             br.close();
             String response = sb.toString();
-
-            Log.d("STATUS", String.valueOf(connection.getResponseCode()));
-            Log.d("MSG" , connection.getResponseMessage());
-            Log.d("RESPONSE" , response);
 
             connection.disconnect();
 
