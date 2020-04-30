@@ -23,6 +23,7 @@
         <activity android:name=".EnrollAsMenteeStudent" />
         <activity android:name=".EnrollAsMentorStudent" />
         <activity android:name=".ViewMeetingsActivity" />
+        <activity android:name=".ViewMaterials" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

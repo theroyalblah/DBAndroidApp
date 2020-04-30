@@ -28,7 +28,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 
     int userID;
 
-    public static int targetMeetingId;
+    public static String meetingMaterialId;
 
     //instantiate the basis of the adapter
     public MeetingAdapter(Context ct, String grades[], String meeting_names[], String dates[], int enrollment[], String times[], String meeting_ids[], String enroll_state, int userID)
@@ -96,7 +96,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         // military time should serve well enough
         viewHolder.timeText.setText(times[index]);
         int enrollmentAndYou = enrollment[index];
-        
+
         if(enroll_state == "mentee") {
             viewHolder.enrollButton.setText("Enroll");
             viewHolder.viewMeetingButton.setText("Enroll All");
@@ -175,10 +175,13 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
 
     private void leaveAllMeetings(int index) {
 
-        final Intent viewMeetingsActivity = new Intent(context, StudentLoginActivity.class);
+        final Intent StudentLoginIntent = new Intent(context, StudentLoginActivity.class);
         String query = String.format("DELETE FROM enroll WHERE mentee_id = '%s' AND meet_id IN (SELECT meet_id FROM meetings WHERE meet_name = '%s' AND group_id = '%s')", userID, meeting_names[index], grades[index]);
         QueryBuilder.performQuery(query);
-        context.startActivity(viewMeetingsActivity);
+
+        query = String.format("DELETE FROM enroll2 WHERE mentor_id = '%s' AND meet_id IN (SELECT meet_id FROM meetings WHERE meet_name = '%s' AND group_id = '%s')", userID, meeting_names[index], grades[index]);
+        QueryBuilder.performQuery(query);
+        context.startActivity(StudentLoginIntent);
 
     }
 
@@ -190,8 +193,9 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             QueryBuilder.performQuery(query);
             context.startActivity(StudentLoginIntent);
         } else {
-            // final Intent viewMaterialsIntent = new Intent(context, ViewMaterialsActivity.class);
-            // context.startActivity(viewMaterialsIntent);
+            meetingMaterialId = meeting_ids[index];
+            final Intent viewMaterialsIntent = new Intent(context, ViewMaterials.class);
+            context.startActivity(viewMaterialsIntent);
         }
     }
 
