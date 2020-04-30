@@ -29,6 +29,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         final Intent editAccountIntent = new Intent(this, EditStudentAccountActivity.class);
         final Intent loginActivityIntent = new Intent(this, LoginActivity.class);
         final Intent enrollAsMenteeIntent = new Intent(this, EnrollAsMenteeStudent.class);
+        final Intent enrollAsMentorIntent = new Intent(this, EnrollAsMentorStudent.class);
 
         // GUI
         final TextView welcomeText = findViewById(R.id.welcomeText);
@@ -57,6 +58,13 @@ public class StudentLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(enrollAsMenteeIntent);
+            }
+        });
+
+        registerAsMentor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(enrollAsMentorIntent);
             }
         });
 

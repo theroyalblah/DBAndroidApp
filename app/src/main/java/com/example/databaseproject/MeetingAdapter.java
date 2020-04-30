@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+
 //Adapter to fill recyclerView with dynamic number of objects, based on meetings input
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHolder> {
 
@@ -60,6 +62,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         Button enrollButton;
         Button viewMeetingButton;
 
+        TextView gradelevelText;
         TextView meetingName;
         TextView timeText;
         TextView dateText;
@@ -68,6 +71,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            gradelevelText = itemView.findViewById(R.id.gradeLevelText);
             capacityText = itemView.findViewById(R.id.capacityText);
             enrollButton = itemView.findViewById(R.id.enrollButton);
             viewMeetingButton = itemView.findViewById(R.id.viewMeetingButton);
@@ -78,27 +82,26 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
     }
 
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        holder.meetingName.setText((Integer.parseInt(grades[position]) + 5) + "th Grade " + meeting_names[position]);
-        holder.timeText.setText(times[position] + " PM");
+        holder.meetingName.setText(meeting_names[position]);
+        String text = String.format("Grade Level: %s", grades[position]);
+        holder.gradelevelText.setText(text);
+
         holder.dateText.setText(dates[position]);
+        holder.timeText.setText(times[position]);
         holder.capacityText.setText(enrollment[position] + "/6");
 
         if(enroll_state == "mentee") {
             holder.enrollButton.setText("Enroll");
-            holder.viewMeetingButton.setEnabled(true);
-            holder.viewMeetingButton.setAlpha(1);
-            holder.viewMeetingButton.setText("Bulk\n Enroll");
+            holder.viewMeetingButton.setText("Enroll All");
         }
         else if (enroll_state == "mentor")
         {
             holder.enrollButton.setText("Enroll");
             holder.viewMeetingButton.setEnabled(false);
-            holder.viewMeetingButton.setAlpha(0);
+            holder.viewMeetingButton.setVisibility(View.GONE);
         }
         else {
             holder.enrollButton.setText("Unenroll");
-            holder.viewMeetingButton.setEnabled(true);
-            holder.viewMeetingButton.setAlpha(1);
             holder.viewMeetingButton.setText("View");
         }
 
@@ -118,11 +121,9 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
         });
     }
 
-    private void verifyAndEnroll(String enroll_state, int position)
-    {
+    private void verifyAndEnroll(String enroll_state, int position) {
 
-        if(enroll_state == "mentor") //enroll as mentee
-        {
+        if(enroll_state == "mentor") {
             final Intent enrollMenteeStudentActivity = new Intent(context, EnrollAsMenteeStudent.class);
             query = String.format("INSERT INTO mentees VALUES ('%s')", userID);
             QueryBuilder.performQuery(query);
@@ -130,8 +131,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             QueryBuilder.performQuery(query);
             context.startActivity(enrollMenteeStudentActivity);
         }
-        else if(enroll_state == "mentor") //enroll as mentor
-        {
+        else if(enroll_state == "mentor") {
             final Intent enrollMentorStudentActivity = new Intent(context, EnrollAsMentorStudent.class);
 
             query = String.format("INSERT INTO enroll2 VALUES ('%s', '%s')", meeting_ids[position], userID);
