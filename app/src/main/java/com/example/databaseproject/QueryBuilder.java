@@ -24,7 +24,9 @@ public class QueryBuilder {
                 StrictMode.setThreadPolicy(policy);
             }
 
+            // Change me to your ipv4 address!
             URL url = new URL("https://192.168.1.17/phase3/queryAPI.php");
+            // ^^^^^^
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
             connection.setSSLSocketFactory(SSLCertificateSocketFactory.getInsecure(0, null));

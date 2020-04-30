@@ -103,12 +103,14 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MyViewHo
             viewHolder.enrollButton.setText("Enroll");
             viewHolder.viewMeetingButton.setText("Enroll All");
             viewHolder.leaveAllMeetings.setVisibility(View.GONE);
+            viewHolder.viewMembersButton.setVisibility(View.GONE);
         }
         else if (enroll_state == "mentor") {
             viewHolder.enrollButton.setText("Enroll");
             viewHolder.viewMeetingButton.setEnabled(false);
             viewHolder.viewMeetingButton.setVisibility(View.GONE);
             viewHolder.leaveAllMeetings.setVisibility(View.GONE);
+            viewHolder.viewMembersButton.setVisibility(View.GONE);
         }
         else {
             enrollmentAndYou += 1;
