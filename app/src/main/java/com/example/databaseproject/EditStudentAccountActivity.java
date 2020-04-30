@@ -50,7 +50,7 @@ public class EditStudentAccountActivity extends AppCompatActivity {
                 String phone = editPhone.getText().toString();
 
                 String format = String.format("UPDATE users SET email = '%s', password = '%s', name = '%s', phone = '%s' WHERE id = '%s'",
-                        email, name, password, phone, userId);
+                        email, password, name, phone, userId);
                 QueryBuilder.performQuery(format);
 
                 // student account

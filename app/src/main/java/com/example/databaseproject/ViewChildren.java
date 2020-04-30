@@ -5,12 +5,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +19,10 @@ import org.json.JSONObject;
 public class ViewChildren extends AppCompatActivity {
 
     String children_names[];
+    String children_id[];
     String names_output = "";
+
+    public static String childId;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -35,12 +37,13 @@ public class ViewChildren extends AppCompatActivity {
         }
 
         for(int i = 0; i < children_names.length; i++){
-                names_output += (i+1) + " " + children_names[i] + "\n";
+                names_output += children_id[i] + " " + children_names[i] + "\n";
         }
 
         TextView childrenText = findViewById(R.id.childrenText);
         childrenText.setText(names_output);
 
+        final EditText editChild = findViewById(R.id.editChild);
 
         final Intent editChildIntent = new Intent(this, EditChild.class);
 
@@ -49,9 +52,22 @@ public class ViewChildren extends AppCompatActivity {
         editChildButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                childId = editChild.getText().toString();
                 startActivity(editChildIntent);
             }
 
+        });
+
+        final Button returnButton = findViewById(R.id.returnButton2);
+        final Intent returnProfile = new Intent(this, StudentLoginActivity.class);
+
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(returnProfile);
+
+            }
         });
     }
 
@@ -61,6 +77,8 @@ public class ViewChildren extends AppCompatActivity {
 
     private void searchChildren() throws JSONException{
 
+
+        //Search children names
         String query = String.format("SELECT name FROM users WHERE id IN" +
                 "                      (SELECT student_id FROM students WHERE parent_id = '%d')",
                 parentsID);
@@ -74,6 +92,22 @@ public class ViewChildren extends AppCompatActivity {
 
             res = QueryBuilder.getJSONObject(response, i);
             children_names[i] = res.getString("name");
+        }
+
+        //Search their id
+        String query2 = String.format("SELECT id FROM users WHERE id IN" +
+                        "                      (SELECT student_id FROM students WHERE parent_id = '%d')",
+                parentsID);
+
+        JSONArray response2 = QueryBuilder.performQuery(query2);
+        JSONObject res2;
+
+        children_id = new String[response2.length()];
+
+        for (int i = 0; i < response2.length(); i++){
+
+            res2 = QueryBuilder.getJSONObject(response2, i);
+            children_id[i] = res2.getString("id");
         }
     }
 
