@@ -71,6 +71,8 @@ public class ViewMembers extends AppCompatActivity {
         JSONArray response = QueryBuilder.performQuery(query);
         JSONObject res;
 
+        menteeMemberNames = new String[response.length()];
+
         for (int i = 0; i < response.length(); i++) {
             res = QueryBuilder.getJSONObject(response, i);
             try {
@@ -85,6 +87,9 @@ public class ViewMembers extends AppCompatActivity {
         String query2 = String.format("SELECT name FROM users WHERE id IN (SELECT mentor_id FROM enroll2 WHERE meet_id='%s')", MeetingAdapter.meetingMaterialId);
         JSONArray response2 = QueryBuilder.performQuery(query2);
         JSONObject res2;
+
+        mentorMemberNames = new String[response2.length()];
+
 
         for (int i = 0; i < response2.length(); i++) {
             res2 = QueryBuilder.getJSONObject(response2, i);
