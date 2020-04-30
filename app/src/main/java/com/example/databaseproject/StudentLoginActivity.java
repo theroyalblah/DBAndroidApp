@@ -46,14 +46,6 @@ public class StudentLoginActivity extends AppCompatActivity {
 
         });
 
-        registerAsMentee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(editAccountIntent);
-            }
-
-        });
-
         editAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
